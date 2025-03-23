@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application d'Appels WebRTC avec Agora</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Application d'Appels WebRTC</h1>
+      <div class="version">v1.0.0</div>
+    </header>
+
+    <div class="control-panel">
+      <div class="form-group">
+        <label for="channel">Nom du canal:</label>
+        <input type="text" id="channel" placeholder="Entrez le nom du canal">
+      </div>
+      
+      <div class="button-group">
+        <button id="join-btn" class="primary-btn">
+          <i class="fas fa-phone"></i> Rejoindre l'appel
+        </button>
+        <button id="leave-btn" class="danger-btn" disabled>
+          <i class="fas fa-phone-slash"></i> Quitter l'appel
+        </button>
+      </div>
+      
+      <div class="controls">
+        <button id="mic-btn" class="control-btn">
+          <i class="fas fa-microphone"></i> <span>Micro</span>
+        </button>
+        <button id="camera-btn" class="control-btn">
+          <i class="fas fa-video"></i> <span>Caméra</span>
+        </button>
+        <button id="screen-share-btn" class="control-btn">
+          <i class="fas fa-desktop"></i> <span>Partage d'écran</span>
+        </button>
+        <button id="test-audio-btn" class="control-btn">
+          <i class="fas fa-volume-up"></i> <span>Tester l'audio</span>
+        </button>
+      </div>
+      
+      <div class="status-container">
+        <div id="connection-status" class="status-indicator offline">
+          <span class="status-dot"></span>
+          <span class="status-text">Déconnecté</span>
+        </div>
+        <div id="bitrate-info">Débit: <span id="bitrate">0 kbps</span></div>
+        <div id="participants-count">
+          <i class="fas fa-users"></i> Participants: <span id="count">0</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="call-container">
+      <div class="video-container">
+        <div id="local-stream" class="video-player local-video">
+          <div class="video-overlay">
+            <div class="user-info">
+              <i class="fas fa-user"></i> Vous
+            </div>
+            <div class="video-stats">
+              <span id="local-resolution">640x480</span>
+              <span id="local-volume"><i class="fas fa-microphone"></i></span>
+            </div>
+          </div>
+        </div>
+        <div id="remote-streams" class="remote-streams"></div>
+      </div>
+      
+      <div class="chat-container">
+        <div class="chat-header">
+          <h3><i class="fas fa-comments"></i> Chat</h3>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="system-message">Bienvenue dans le chat de l'appel.</div>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="chat-input" placeholder="Écrivez un message..." disabled>
+          <button id="send-msg-btn" disabled><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="diagnostics-panel">
+      <div class="diagnostics-header">
+        <h3>Diagnostics</h3>
+        <button id="toggle-diagnostics"><i class="fas fa-chevron-down"></i></button>
+      </div>
+      <div class="diagnostics-content" id="diagnostics-content" style="display: none;">
+        <div class="diagnostic-item">
+          <span class="diagnostic-label">Réseau:</span>
+          <span class="diagnostic-value" id="network-status">En attente...</span>
+        </div>
+        <div class="diagnostic-item">
+          <span class="diagnostic-label">Microphone:</span>
+          <span class="diagnostic-value" id="mic-status">Non autorisé</span>
+        </div>
+        <div class="diagnostic-item">
+          <span class="diagnostic-label">Caméra:</span>
+          <span class="diagnostic-value" id="camera-status">Non autorisé</span>
+        </div>
+        <div class="diagnostic-item">
+          <span class="diagnostic-label">Connexion:</span>
+          <span class="diagnostic-value" id="connection-diagnostics">Non connecté</span>
+        </div>
+        <div class="diagnostic-item">
+          <span class="diagnostic-label">Pertes de paquets:</span>
+          <span class="diagnostic-value" id="packet-loss">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Templates pour les éléments créés dynamiquement -->
+  <template id="remote-player-template">
+    <div class="remote-player">
+      <div class="video-overlay">
+        <div class="user-info">Participant</div>
+        <div class="video-stats">
+          <span class="remote-resolution">640x480</span>
+          <span class="remote-volume"><i class="fas fa-microphone"></i></span>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <div id="notifications" class="notifications"></div>
+
+  <!-- Chargement du SDK Agora -->
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.19.3.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
